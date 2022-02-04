@@ -1,0 +1,39 @@
+@media screen and (max-width: 986px) 
+  {
+    .login-height,.signup_section
+    {
+        width: 400px;
+        border-radius: 12px;
+        margin: 20px;
+    }
+    .bg-image
+    {
+        display: none;
+    }
+
+    .login-layout > div
+    {
+        width: 100%;
+        padding: 2rem;
+    }
+  }
+  @media screen and (max-width: 415px)
+  {
+    .login-height,.signup_section
+    {
+        width: 350px;
+        border-radius: 12px;
+        margin: 20px;  
+    }
+
+    .login-layout > div
+    {
+        width: 100%;
+        padding: 1rem;
+    }
+    
+    
+  }
+
+
+  
