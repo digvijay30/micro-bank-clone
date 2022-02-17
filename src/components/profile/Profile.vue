@@ -200,7 +200,6 @@ export default {
 
         localStorage.setItem("token", data.token);
         this.$store.dispatch("SET_TOKEN", data.token);
-        this.$store.dispatch("TRACK_LOGIN");
 
         if (data.type == "error") {
           this.$vToastify.error(data.msg);

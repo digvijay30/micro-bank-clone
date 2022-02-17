@@ -99,19 +99,19 @@ export default {
     },
     HandleCompany() {
       this.$store.dispatch("TRACK_LOGIN");
-      const { company_name } = this.$store.getters.getUserDetails;
+      const { company_name } = this.userDetails;
       return company_name;
     },
     handleEmail() {
       this.$store.dispatch("TRACK_LOGIN");
       const { email } = this.userDetails;
       return email;
-    },
+    }
   },
   created() {
-    this.$store.dispatch("TRACK_LOGIN");
     this.userDetails = this.$store.getters.getUserDetails;
-  },
+    this.$store.dispatch("TRACK_LOGIN");
+  }
 };
 </script>
 <style scoped>

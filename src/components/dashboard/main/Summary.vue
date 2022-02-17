@@ -59,17 +59,17 @@
           <div class="feature-flex">
             <div><img src="../../../assets/home.jpg" alt="home" /></div>
             <div class="title">Current Account</div>
-            <div><star-rating :rating="0" @rating-selected="setRating($event,'Account')" :active-color="['#098b1f']" :active-border-color="['#098b1f']" inactive-color="#fff"  :border-width="3" :active-on-click="true" :show-rating="false" :star-size="14"></star-rating></div>
+            <div><star-rating :rating="handleRating('Account')" @rating-selected="setRating($event,'Account')" :active-color="['#098b1f']" :active-border-color="['#098b1f']" inactive-color="#fff"  :border-width="3" :active-on-click="true" :show-rating="false" :star-size="14"></star-rating></div>
           </div>
           <div class="feature-flex">
             <div><img src="../../../assets/payroll.jpg" alt="home" /></div>
             <div class="title">Payroll</div>
-            <div><star-rating :rating="0" @rating-selected="setRating($event,'Payroll')" :active-color="['#098b1f']" :active-border-color="['#098b1f']" inactive-color="#fff"  :border-width="3" :active-on-click="true" :show-rating="false" :star-size="14"></star-rating></div>
+            <div><star-rating :rating="handleRating('Payroll')" @rating-selected="setRating($event,'Payroll')" :active-color="['#098b1f']" :active-border-color="['#098b1f']" inactive-color="#fff"  :border-width="3" :active-on-click="true" :show-rating="false" :star-size="14"></star-rating></div>
           </div>
           <div class="feature-flex">
             <div><img src="../../../assets/payment.jpg" alt="home" /></div>
             <div class="title">Payments</div>
-            <div><star-rating :rating="0" @rating-selected="setRating($event,'Payment')" :active-color="['#098b1f']" :active-border-color="['#098b1f']" inactive-color="#fff"  :border-width="3" :active-on-click="true" :show-rating="false" :star-size="14"></star-rating></div>
+            <div><star-rating :rating="handleRating('Payment')" @rating-selected="setRating($event,'Payment')" :active-color="['#098b1f']" :active-border-color="['#098b1f']" inactive-color="#fff"  :border-width="3" :active-on-click="true" :show-rating="false" :star-size="14"></star-rating></div>
           </div>
         </div>
       </div>
@@ -181,6 +181,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import StarRating from 'vue-star-rating';
 export default {
   components:{
@@ -190,8 +191,19 @@ export default {
   data: () => {
     return {
       isSummaryActive: true,
-      ratings:{'Account':0,'Payroll':0,'Payment':0}
+      userDetails:null
     };
+  },
+  created()
+  {
+     this.$store.dispatch("TRACK_LOGIN");
+     this.userDetails = this.$store.getters.getUserDetails;
+  },
+  computed:{
+      handleRating()
+      {
+          return (param)=>this.userDetails.ratings[param];
+      }
   },
   methods: {
     togglePage(param) {
@@ -201,9 +213,19 @@ export default {
         this.isSummaryActive = true;
       }
     },
-     setRating: function(rating,param) {
-      this.ratings[param] = rating;
-      console.log(this.ratings);
+     setRating: async function(rating,param) {
+      this.userDetails.ratings[param] = rating;
+      const {data} = await axios.patch('http://localhost:3000/rating',{_id:this.userDetails._id,ratings:this.userDetails.ratings});
+      if(data.status == 200)
+      {
+          localStorage.setItem('token',data.token);
+          this.$store.dispatch("SET_TOKEN", data.token);
+          this.$vToastify.success(`${param} rating updated Successfully`);
+      }
+      else
+      {
+        this.$vToastify.error(data.msg);
+      }
     },
   },
 };

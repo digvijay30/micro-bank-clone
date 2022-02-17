@@ -8,12 +8,10 @@ import store from './store.js';
 Vue.use(VueRouter);
 Vue.use(VueToastify);
 
-
 const router = new VueRouter({
   routes,
   mode: "history",
 });
-
 
 router.beforeEach((to, from, next) => {
   if(to.meta.isAuth)
@@ -34,8 +32,10 @@ router.beforeEach((to, from, next) => {
 });
 
 
-new Vue({
+const app = new Vue({
   render: (h) => h(App),
   store,
   router,
-}).$mount("#app");
+});
+
+app.$mount("#app");
