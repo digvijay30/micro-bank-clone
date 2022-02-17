@@ -139,5 +139,11 @@
     padding: 1rem;
     box-sizing: border-box;
   }
+
+  .profile-link
+  {
+    text-decoration: none;
+    color: black;
+  }
   
   

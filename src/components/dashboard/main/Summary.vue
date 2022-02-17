@@ -59,17 +59,17 @@
           <div class="feature-flex">
             <div><img src="../../../assets/home.jpg" alt="home" /></div>
             <div class="title">Current Account</div>
-            <div><img src="../../../assets/star.jpg" alt="star" /></div>
+            <div><star-rating :rating="0" @rating-selected="setRating($event,'Account')" :active-color="['#098b1f']" :active-border-color="['#098b1f']" inactive-color="#fff"  :border-width="3" :active-on-click="true" :show-rating="false" :star-size="14"></star-rating></div>
           </div>
           <div class="feature-flex">
             <div><img src="../../../assets/payroll.jpg" alt="home" /></div>
             <div class="title">Payroll</div>
-            <div><img src="../../../assets/star.jpg" alt="star" /></div>
+            <div><star-rating :rating="0" @rating-selected="setRating($event,'Payroll')" :active-color="['#098b1f']" :active-border-color="['#098b1f']" inactive-color="#fff"  :border-width="3" :active-on-click="true" :show-rating="false" :star-size="14"></star-rating></div>
           </div>
           <div class="feature-flex">
             <div><img src="../../../assets/payment.jpg" alt="home" /></div>
             <div class="title">Payments</div>
-            <div><img src="../../../assets/star.jpg" alt="star" /></div>
+            <div><star-rating :rating="0" @rating-selected="setRating($event,'Payment')" :active-color="['#098b1f']" :active-border-color="['#098b1f']" inactive-color="#fff"  :border-width="3" :active-on-click="true" :show-rating="false" :star-size="14"></star-rating></div>
           </div>
         </div>
       </div>
@@ -181,11 +181,16 @@
 </template>
 
 <script>
+import StarRating from 'vue-star-rating';
 export default {
+  components:{
+   StarRating
+  },
   name: "Summary",
   data: () => {
     return {
       isSummaryActive: true,
+      ratings:{'Account':0,'Payroll':0,'Payment':0}
     };
   },
   methods: {
@@ -195,6 +200,10 @@ export default {
       } else {
         this.isSummaryActive = true;
       }
+    },
+     setRating: function(rating,param) {
+      this.ratings[param] = rating;
+      console.log(this.ratings);
     },
   },
 };

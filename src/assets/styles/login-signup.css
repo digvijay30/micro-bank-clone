@@ -134,6 +134,22 @@
     box-shadow: 1px 1px 16px 3px gray;
     cursor: pointer;
   }
+
+  .error
+  {
+    box-shadow: 1px 1px 10px 3px red;
+    animation: blink 0.3s 1 linear;
+  }
+
+
+    @keyframes blink {
+			0% { transform: translate(30px); }
+			20% { transform: translate(-30px); }
+			40% { transform: translate(15px); }
+			60% { transform: translate(-15px); }
+			80% { transform: translate(8px); }
+			100% { transform: translate(0px); }
+		}
   
   .form-style input[type="text"],
   .form-style input[type="password"],
@@ -160,5 +176,21 @@
     font-family: "Open Sans", sans-serif;
     font-weight: 700;
     color: red;
+  }
+
+  /* loader css */
+  .loader {
+    border: 5px solid #f3f3f3; /* Light grey */
+    border-top: 5px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite;
+    margin: auto;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
   
