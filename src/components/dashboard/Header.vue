@@ -9,7 +9,7 @@
         </div>
         <hr class="horizontal" />
         <div>
-          <h2>{{ HandleCompany }}</h2>
+          <h2>{{ HandleCompany|upperCase }}</h2>
         </div>
       </div>
       <div class="menu-right">
@@ -26,7 +26,10 @@
 
         <div class="dropdown-list" v-if="isClickProfile">
           <div class="user-details">
-            <div class="user-profile" v-html="profile_pic?profile_pic:shortName"></div>
+            <div
+              class="user-profile"
+              v-html="profile_pic ? profile_pic : shortName"
+            ></div>
           </div>
           <div class="user-account-details">
             <div class="account-email">
@@ -52,12 +55,19 @@
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "Header",
   data() {
     return {
       userDetails: null,
     };
+  },
+  filters:{
+    upperCase(data)
+    {
+      return data.toString().toUpperCase();
+    }
   },
   methods: {
     UpdateProfileStatus() {
@@ -72,9 +82,10 @@ export default {
     },
   },
   computed: {
-    isClickProfile() {
-      return this.$store.getters.getClickProfileStatus;
-    },
+    ...mapGetters({
+      isClickProfile: "getClickProfileStatus",
+      userData: "getUserDetails",
+    }),
     shortName() {
       const shortNameArray = this.userDetails.name.split(" ");
       let shortName = "";
@@ -87,31 +98,29 @@ export default {
     },
     profile_pic()
     {
-      if(this.userDetails.profile_img)
+      if(this.userData.profile_img)
       {
-        return `<img width='100%' height='100%' style='border-radius: 50%;' src='http://localhost:3000/profile/${this.userDetails.profile_img}' />`;  
+        return `<img width='100%' height='100%' style='border-radius: 50%;' src='http://localhost:3000/profile/${this.userData.profile_img}' />`;
       }
       else
       {
         return false;
       }
-       
+
     },
     HandleCompany() {
-      this.$store.dispatch("TRACK_LOGIN");
-      const { company_name } = this.userDetails;
+      const { company_name } = this.userData;
       return company_name;
     },
     handleEmail() {
-      this.$store.dispatch("TRACK_LOGIN");
-      const { email } = this.userDetails;
+      const { email } = this.userData;
       return email;
-    }
+    },
   },
   created() {
     this.userDetails = this.$store.getters.getUserDetails;
     this.$store.dispatch("TRACK_LOGIN");
-  }
+  },
 };
 </script>
 <style scoped>

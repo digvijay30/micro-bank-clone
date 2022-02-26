@@ -186,7 +186,15 @@ export default {
       Form.append("_id", _id);
       const { data } = await axios.post("http://localhost:3000/update", Form);
       if (data.type === "error") this.$vToastify.error(data.msg);
-      else if (data.type === "success") this.$vToastify.success(data.msg);
+      else if (data.status == 200) 
+      {
+        localStorage.setItem("token", data.token);
+        this.$store.dispatch("SET_TOKEN", data.token);
+        this.$store.dispatch("TRACK_LOGIN");
+        this.$vToastify.success(data.msg);
+        this.profileImages = null;
+        this.images = null;
+      }
     },
     async UpdateDetails() {
       this.submitClick = true;
@@ -200,7 +208,7 @@ export default {
 
         localStorage.setItem("token", data.token);
         this.$store.dispatch("SET_TOKEN", data.token);
-
+        this.$store.dispatch("TRACK_LOGIN");
         if (data.type == "error") {
           this.$vToastify.error(data.msg);
         } else if (data.type == "success") {
